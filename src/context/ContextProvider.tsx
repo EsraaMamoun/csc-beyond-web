@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 interface StateContextProps {
-  currentUser: any;
+  user: any;
   token: string | null;
   notification: string | null;
   setUser: (user: any) => void;
@@ -10,7 +10,7 @@ interface StateContextProps {
 }
 
 const StateContext = createContext<StateContextProps>({
-  currentUser: null,
+  user: null,
   token: null,
   notification: null,
   setUser: () => {},
@@ -51,7 +51,7 @@ export const ContextProvider: React.FC<ContextProviderProps> = ({
   return (
     <StateContext.Provider
       value={{
-        currentUser: user,
+        user: user,
         setUser,
         token,
         setToken,

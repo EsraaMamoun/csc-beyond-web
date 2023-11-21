@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import axiosClient from "../axios-client";
-import { Link } from "react-router-dom";
 import { useStateContext } from "../context/ContextProvider";
+import EditUserForm from "./EditUserForm";
+import AddUserForm from "./AddUserForm";
+import AddSubjectForm from "./AddSubjectForm";
 
 interface User {
   id: number;
@@ -14,6 +16,11 @@ export default function Users() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const { setNotification } = useStateContext();
+  const [isEditFormVisible, setEditFormVisible] = useState(false);
+  const [accountId, setAccountId] = useState<number | null>(null);
+  const [isCreateFormVisible, setCreateFormVisible] = useState(false);
+  const [isCreateSubjectFormVisible, setCreateSubjectFormVisible] =
+    useState(false);
 
   useEffect(() => {
     getUsers();
@@ -42,6 +49,31 @@ export default function Users() {
       });
   };
 
+  const handleEditClick = (id: number) => {
+    setEditFormVisible(true);
+    setAccountId(id);
+  };
+
+  const handleUserUpdated = () => {
+    getUsers();
+    setEditFormVisible(false);
+  };
+
+  const handleCreateClick = () => {
+    console.log("clickeeed");
+
+    setCreateFormVisible(true);
+  };
+
+  const handleUserCreated = () => {
+    getUsers();
+    setEditFormVisible(false);
+  };
+
+  const handleCreateSubjectClick = () => {
+    setCreateSubjectFormVisible(true);
+  };
+
   return (
     <div>
       <div
@@ -52,9 +84,12 @@ export default function Users() {
         }}
       >
         <h1>Users</h1>
-        <Link className="btn-add" to="/users/new">
-          Add new
-        </Link>
+        <button className="btn-add" onClick={() => handleCreateClick()}>
+          Add user
+        </button>
+        <button className="btn-add" onClick={() => handleCreateSubjectClick()}>
+          Add subject
+        </button>
       </div>
       <div className="card animated fadeInDown">
         <table>
@@ -85,9 +120,12 @@ export default function Users() {
                   <td>{u.email}</td>
                   <td>{u.created_at}</td>
                   <td>
-                    <Link className="btn-edit" to={"/users/" + u.id}>
+                    <button
+                      className="btn-edit"
+                      onClick={() => handleEditClick(u.id)}
+                    >
                       Edit
-                    </Link>
+                    </button>
                     &nbsp;
                     <button
                       className="btn-delete"
@@ -102,6 +140,11 @@ export default function Users() {
           )}
         </table>
       </div>
+      {isEditFormVisible && (
+        <EditUserForm id={accountId} onUserUpdated={handleUserUpdated} />
+      )}
+      {isCreateFormVisible && <AddUserForm onUserCreated={handleUserCreated} />}
+      {isCreateSubjectFormVisible && <AddSubjectForm />}
     </div>
   );
 }

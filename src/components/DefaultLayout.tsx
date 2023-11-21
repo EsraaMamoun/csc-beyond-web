@@ -3,14 +3,8 @@ import { useStateContext } from "../context/ContextProvider";
 import axiosClient from "../axios-client";
 import { useEffect } from "react";
 
-interface User {
-  name: string;
-  // Add other properties as needed
-}
-
 export default function DefaultLayout() {
-  const { currentUser, token, setUser, setToken, notification } =
-    useStateContext();
+  const { user, token, setUser, setToken, notification } = useStateContext();
 
   if (!token) {
     return <Navigate to="/login" />;
@@ -20,28 +14,36 @@ export default function DefaultLayout() {
     ev.preventDefault();
 
     axiosClient.post("auth/logout").then(() => {
-      setUser({} as User);
+      setUser({});
       setToken(null);
     });
   };
 
   useEffect(() => {
-    axiosClient.get("/user").then(({ data }) => {
-      setUser(data as User);
+    console.log("token", token);
+
+    axiosClient.post("/account/current").then(({ data }) => {
+      setUser({
+        id: data.id,
+        username: data.username,
+        is_active: data.is_active,
+        account_type: data.account_type,
+        email: data.email,
+      });
     });
   }, []);
 
-  return (
-    <div id="defaultLayout">
+  return user.account_type === "admin" ? (
+    <div id="adminLayout">
       <aside>
-        <Link to="/dashboard">Dashboard</Link>
+        <Link to="/subjects">Subjects</Link>
         <Link to="/users">Users</Link>
       </aside>
       <div className="content">
         <header>
           <div>Header</div>
           <div>
-            {currentUser.name} &nbsp; &nbsp;
+            {user.username} &nbsp; &nbsp;
             <a onClick={onLogout} className="btn-logout" href="#">
               Logout
             </a>
@@ -52,6 +54,20 @@ export default function DefaultLayout() {
         </main>
         {notification && <div className="notification">{notification}</div>}
       </div>
+    </div>
+  ) : (
+    <div className="userLayout">
+      <header>
+        <div>Header</div>
+        <div>
+          <a onClick={onLogout} className="btn-logout" href="#">
+            Logout
+          </a>
+        </div>
+      </header>
+      <main>
+        <Outlet />
+      </main>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { useStateContext } from "../context/ContextProvider";
 
 export default function GuestLayout() {
   const { token } = useStateContext();
+  const { notification } = useStateContext();
 
   if (token) {
     return <Navigate to="/" />;
@@ -10,6 +11,7 @@ export default function GuestLayout() {
 
   return (
     <div id="guestLayout">
+      {notification && <div className="notification">{notification}</div>}
       <Outlet />
     </div>
   );

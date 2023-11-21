@@ -1,12 +1,27 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import Dashboard from "./views/Dashboard";
+import Subjects from "./views/Subjects";
 import DefaultLayout from "./components/DefaultLayout";
 import GuestLayout from "./components/GuestLayout";
 import Login from "./views/Login";
 import NotFound from "./views/NotFound";
 import Signup from "./views/Signup";
 import Users from "./views/Users";
-import UserForm from "./views/UserForm";
+import HomePage from "./views/HomePage";
+import { useStateContext } from "./context/ContextProvider";
+
+const AdminRoute = ({ element }: any) => {
+  const { user } = useStateContext();
+
+  const isAdmin = user?.account_type === "admin";
+  return isAdmin ? element : <Navigate to="/home-page" />;
+};
+
+const UserRoute = ({ element }: any) => {
+  const { user } = useStateContext();
+
+  const isAdmin = user?.account_type === "user";
+  return isAdmin ? element : <Navigate to="/" />;
+};
 
 const router = createBrowserRouter([
   {
@@ -18,20 +33,16 @@ const router = createBrowserRouter([
         element: <Navigate to="/users" />,
       },
       {
-        path: "/dashboard",
-        element: <Dashboard />,
+        path: "/subjects",
+        element: <AdminRoute element={<Subjects />} />,
       },
       {
         path: "/users",
-        element: <Users />,
+        element: <AdminRoute element={<Users />} />,
       },
       {
-        path: "/users/new",
-        element: <UserForm key="userCreate" />,
-      },
-      {
-        path: "/users/:id",
-        element: <UserForm key="userUpdate" />,
+        path: "/home-page",
+        element: <UserRoute element={<HomePage />} />,
       },
     ],
   },
