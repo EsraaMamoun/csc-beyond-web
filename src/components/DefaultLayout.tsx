@@ -56,7 +56,7 @@ export default function DefaultLayout() {
       </div>
     </div>
   ) : (
-    <div className="userLayout">
+    <div id="userLayout">
       <header>
         <div>Header</div>
         <div>

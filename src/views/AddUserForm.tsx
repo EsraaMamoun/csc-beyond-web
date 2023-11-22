@@ -12,7 +12,11 @@ interface User {
 
 Modal.setAppElement("#root");
 
-export default function AddUserForm(props: { onUserCreated: () => void }) {
+export default function AddUserForm(props: {
+  onUserCreated: () => void;
+  isOpen: boolean;
+  setCreateForm: (open: boolean) => void;
+}) {
   const [user, setUser] = useState<User>({
     username: "",
     email: "",
@@ -22,12 +26,14 @@ export default function AddUserForm(props: { onUserCreated: () => void }) {
   const [errors, setErrors] = useState<string | null>(null);
   const { setNotification } = useStateContext();
   const [isModalOpen, setIsModalOpen] = useState(true);
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const closeModal = () => {
+    setIsModalOpen(false);
+    props.setCreateForm(false);
+  };
 
   useEffect(() => {
-    openModal();
-  }, []);
+    setIsModalOpen(props.isOpen);
+  }, [props.isOpen]);
 
   const onSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
@@ -57,37 +63,48 @@ export default function AddUserForm(props: { onUserCreated: () => void }) {
       isOpen={isModalOpen}
       onRequestClose={closeModal}
       contentLabel="New User Modal"
+      style={{
+        content: {
+          width: "50%",
+          height: "auto",
+          margin: "auto",
+          overflow: "hidden",
+        },
+      }}
     >
       <div className="login-signup-form animated fadeInDown">
         {errors && <div className="alert">{errors}</div>}
-        <form onSubmit={onSubmit}>
-          <input
-            value={user.username}
-            onChange={(ev) => setUser({ ...user, username: ev.target.value })}
-            placeholder="Username"
-          />
-          <input
-            value={user.email}
-            onChange={(ev) => setUser({ ...user, email: ev.target.value })}
-            placeholder="Email"
-          />
-          <input
-            type="password"
-            onChange={(ev) => setUser({ ...user, password: ev.target.value })}
-            placeholder="Password"
-          />
-          <input
-            type="password"
-            onChange={(ev) =>
-              setUser({
-                ...user,
-                password_confirmation: ev.target.value,
-              })
-            }
-            placeholder="Password Confirmation"
-          />
-          <button className="btn">Save</button>
-        </form>
+        <div className="form">
+          <form onSubmit={onSubmit}>
+            <h1 className="title">Add New User</h1>
+            <input
+              value={user.username}
+              onChange={(ev) => setUser({ ...user, username: ev.target.value })}
+              placeholder="Username"
+            />
+            <input
+              value={user.email}
+              onChange={(ev) => setUser({ ...user, email: ev.target.value })}
+              placeholder="Email"
+            />
+            <input
+              type="password"
+              onChange={(ev) => setUser({ ...user, password: ev.target.value })}
+              placeholder="Password"
+            />
+            <input
+              type="password"
+              onChange={(ev) =>
+                setUser({
+                  ...user,
+                  password_confirmation: ev.target.value,
+                })
+              }
+              placeholder="Password Confirmation"
+            />
+            <button className="btn btn-block">Save</button>
+          </form>
+        </div>
       </div>
     </Modal>
   );

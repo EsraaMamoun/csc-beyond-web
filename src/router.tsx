@@ -13,7 +13,7 @@ const AdminRoute = ({ element }: any) => {
   const { user } = useStateContext();
 
   const isAdmin = user?.account_type === "admin";
-  return isAdmin ? element : <Navigate to="/home-page" />;
+  return isAdmin ? element : <Navigate to="/" />;
 };
 
 const UserRoute = ({ element }: any) => {

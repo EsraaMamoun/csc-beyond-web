@@ -15,6 +15,8 @@ Modal.setAppElement("#root");
 export default function EditUserForm(props: {
   id: number | null;
   onUserUpdated: () => void;
+  isOpen: boolean;
+  setEditForm: (open: boolean) => void;
 }) {
   const [user, setUser] = useState<User>({
     id: null,
@@ -27,7 +29,10 @@ export default function EditUserForm(props: {
   const { setNotification } = useStateContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const closeModal = () => {
+    setIsModalOpen(false);
+    props.setEditForm(false);
+  };
   const id = props.id;
 
   useEffect(() => {
@@ -50,7 +55,8 @@ export default function EditUserForm(props: {
           }
         });
     }
-  }, [id]);
+    setIsModalOpen(props.isOpen);
+  }, [id, props.isOpen]);
 
   const onSubmit = (ev: FormEvent) => {
     ev.preventDefault();
@@ -102,6 +108,14 @@ export default function EditUserForm(props: {
       isOpen={isModalOpen}
       onRequestClose={closeModal}
       contentLabel="Edit Profile Modal"
+      style={{
+        content: {
+          width: "50%",
+          height: "auto",
+          margin: "auto",
+          overflow: "hidden",
+        },
+      }}
     >
       <div className="login-signup-form animated fadeInDown">
         <div className="form">

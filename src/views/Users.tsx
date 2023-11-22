@@ -4,6 +4,7 @@ import { useStateContext } from "../context/ContextProvider";
 import EditUserForm from "./EditUserForm";
 import AddUserForm from "./AddUserForm";
 import AddSubjectForm from "./AddSubjectForm";
+import AssignSubjectToUser from "./AssignSubjectToUser";
 
 interface User {
   id: number;
@@ -20,6 +21,8 @@ export default function Users() {
   const [accountId, setAccountId] = useState<number | null>(null);
   const [isCreateFormVisible, setCreateFormVisible] = useState(false);
   const [isCreateSubjectFormVisible, setCreateSubjectFormVisible] =
+    useState(false);
+  const [isAssignSubjectToUserVisible, setAssignSubjectToUserVisible] =
     useState(false);
 
   useEffect(() => {
@@ -74,6 +77,10 @@ export default function Users() {
     setCreateSubjectFormVisible(true);
   };
 
+  const handleAssignSubjectToUserClick = () => {
+    setAssignSubjectToUserVisible(true);
+  };
+
   return (
     <div>
       <div
@@ -89,6 +96,12 @@ export default function Users() {
         </button>
         <button className="btn-add" onClick={() => handleCreateSubjectClick()}>
           Add subject
+        </button>
+        <button
+          className="btn-add"
+          onClick={() => handleAssignSubjectToUserClick()}
+        >
+          Assign subject to user
         </button>
       </div>
       <div className="card animated fadeInDown">
@@ -141,10 +154,36 @@ export default function Users() {
         </table>
       </div>
       {isEditFormVisible && (
-        <EditUserForm id={accountId} onUserUpdated={handleUserUpdated} />
+        <EditUserForm
+          id={accountId}
+          onUserUpdated={handleUserUpdated}
+          isOpen={isEditFormVisible}
+          setEditForm={(open: boolean) => setEditFormVisible(open)}
+        />
       )}
-      {isCreateFormVisible && <AddUserForm onUserCreated={handleUserCreated} />}
-      {isCreateSubjectFormVisible && <AddSubjectForm />}
+      {isCreateFormVisible && (
+        <AddUserForm
+          onUserCreated={handleUserCreated}
+          isOpen={isCreateFormVisible}
+          setCreateForm={(open: boolean) => setCreateFormVisible(open)}
+        />
+      )}
+      {isCreateSubjectFormVisible && (
+        <AddSubjectForm
+          isOpen={isCreateSubjectFormVisible}
+          setCreateSubjectForm={(open: boolean) =>
+            setCreateSubjectFormVisible(open)
+          }
+        />
+      )}
+      {isAssignSubjectToUserVisible && (
+        <AssignSubjectToUser
+          isOpen={isAssignSubjectToUserVisible}
+          setAssignSubjectToUser={(open: boolean) =>
+            setAssignSubjectToUserVisible(open)
+          }
+        />
+      )}
     </div>
   );
 }
