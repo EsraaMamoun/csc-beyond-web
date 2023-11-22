@@ -70,12 +70,6 @@ export default function Subjects() {
                   <td>{s.subject_name}</td>
                   <td>{s.minimum_mark}</td>
                   <td>
-                    {/* <button
-                      className="btn-edit"
-                      onClick={() => handleEditClick(s.id)}
-                    >
-                      Edit
-                    </button> */}
                     &nbsp;
                     <button
                       className="btn-delete"
