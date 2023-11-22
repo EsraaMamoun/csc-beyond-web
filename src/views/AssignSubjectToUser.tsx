@@ -95,7 +95,6 @@ export default function AssignSubjectToUser(props: AssignSubjectToUserProps) {
       }}
     >
       <div className="login-signup-form animated fadeInDown">
-        {state.errors && <div className="alert">{state.errors}</div>}
         <div className="form">
           <form onSubmit={onSubmit}>
             <h1 className="title">Assign Subject to User</h1>
@@ -139,7 +138,7 @@ export default function AssignSubjectToUser(props: AssignSubjectToUserProps) {
                 </option>
               ))}
             </select>
-
+            {state.errors && <div className="alert">{state.errors}</div>}
             <button className="btn btn-block">Assign Subject</button>
           </form>
         </div>

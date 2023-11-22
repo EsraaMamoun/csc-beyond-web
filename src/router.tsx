@@ -8,10 +8,12 @@ import Signup from "./views/Signup";
 import Users from "./views/Users";
 import HomePage from "./views/HomePage";
 import { useStateContext } from "./context/ContextProvider";
+import { useEffect } from "react";
 
 const AdminRoute = ({ element }: any) => {
   const { user } = useStateContext();
 
+  useEffect(() => {}, [user]);
   const isAdmin = user?.account_type === "admin";
   return isAdmin ? element : <Navigate to="/home-page" />;
 };
@@ -19,6 +21,7 @@ const AdminRoute = ({ element }: any) => {
 const UserRoute = ({ element }: any) => {
   const { user } = useStateContext();
 
+  useEffect(() => {}, [user]);
   const isAdmin = user?.account_type === "user";
   return isAdmin ? element : <Navigate to="/" />;
 };

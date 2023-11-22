@@ -286,3 +286,7 @@ select {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
+.inactive {
+  background-color: rgb(204, 203, 203);
+}

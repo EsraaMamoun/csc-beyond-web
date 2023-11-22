@@ -68,6 +68,7 @@ export default function SetUserSubjectMark(props: SetUserSubjectMarkProps) {
           ...prevState,
           submitDisabled: false,
           subjects: response.data,
+          errors: null,
         }));
       } else {
         setState((prevState) => ({
@@ -115,7 +116,6 @@ export default function SetUserSubjectMark(props: SetUserSubjectMarkProps) {
       }}
     >
       <div className="login-signup-form animated fadeInDown">
-        {state.errors && <div className="alert">{state.errors}</div>}
         <div className="form">
           <form onSubmit={onSubmit}>
             <h1 className="title">Set User Subject Mark</h1>
@@ -184,7 +184,7 @@ export default function SetUserSubjectMark(props: SetUserSubjectMarkProps) {
                 />
               </>
             )}
-
+            {state.errors && <div className="alert">{state.errors}</div>}
             <button disabled={state.submitDisabled} className="btn btn-block">
               Set Mark
             </button>

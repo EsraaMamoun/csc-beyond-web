@@ -12,6 +12,7 @@ interface User {
   username: string;
   email: string;
   created_at: string;
+  is_active: boolean;
 }
 
 export default function Users() {
@@ -136,7 +137,7 @@ export default function Users() {
           {!loading && (
             <tbody>
               {users.map((u) => (
-                <tr key={u.id}>
+                <tr key={u.id} className={!u.is_active ? "inactive" : ""}>
                   <td>{u.id}</td>
                   <td>{u.username}</td>
                   <td>{u.email}</td>
