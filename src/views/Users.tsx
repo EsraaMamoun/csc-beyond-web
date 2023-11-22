@@ -5,6 +5,7 @@ import EditUserForm from "./EditUserForm";
 import AddUserForm from "./AddUserForm";
 import AddSubjectForm from "./AddSubjectForm";
 import AssignSubjectToUser from "./AssignSubjectToUser";
+import SetUserSubjectMark from "./SetUserSubjectMark";
 
 interface User {
   id: number;
@@ -24,6 +25,7 @@ export default function Users() {
     useState(false);
   const [isAssignSubjectToUserVisible, setAssignSubjectToUserVisible] =
     useState(false);
+  const [isSetMarkVisible, setSetMarkVisible] = useState(false);
 
   useEffect(() => {
     getUsers();
@@ -81,6 +83,10 @@ export default function Users() {
     setAssignSubjectToUserVisible(true);
   };
 
+  const handleSetMarkClick = () => {
+    setSetMarkVisible(true);
+  };
+
   return (
     <div>
       <div
@@ -102,6 +108,9 @@ export default function Users() {
           onClick={() => handleAssignSubjectToUserClick()}
         >
           Assign subject to user
+        </button>
+        <button className="btn-add" onClick={() => handleSetMarkClick()}>
+          Set mark
         </button>
       </div>
       <div className="card animated fadeInDown">
@@ -182,6 +191,12 @@ export default function Users() {
           setAssignSubjectToUser={(open: boolean) =>
             setAssignSubjectToUserVisible(open)
           }
+        />
+      )}
+      {isSetMarkVisible && (
+        <SetUserSubjectMark
+          isOpen={isSetMarkVisible}
+          setSetMark={(open: boolean) => setSetMarkVisible(open)}
         />
       )}
     </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axiosClient from "../axios-client";
 import Modal from "react-modal";
+import { useStateContext } from "../context/ContextProvider";
 
 interface AssignSubjectToUserProps {
   isOpen: boolean;
@@ -38,6 +39,7 @@ export default function AssignSubjectToUser(props: AssignSubjectToUserProps) {
 
   const [state, setState] = useState<AssignSubjectToUserState>(initialState);
   const [isModalOpen, setIsModalOpen] = useState(true);
+  const { setNotification } = useStateContext();
 
   useEffect(() => {
     setIsModalOpen(props.isOpen);
@@ -63,10 +65,11 @@ export default function AssignSubjectToUser(props: AssignSubjectToUserProps) {
         subject_id: state.selectedSubject,
       })
       .then(() => {
+        setNotification("Subject assigned to the user successfully.");
+
         closeModal();
       })
       .catch((err) => {
-        // Handle errors
         const response = err.response;
         if (response) {
           setState((prevState) => ({
